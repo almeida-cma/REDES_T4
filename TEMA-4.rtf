@@ -1,5 +1,5 @@
-{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri-Bold;}{\f1\fnil\fcharset1 Segoe UI Symbol;}{\f2\fnil\fcharset128 ArialMT;}{\f3\fnil\fcharset0 Calibri;}{\f4\fnil Calibri;}}
-{\colortbl ;\red89\green52\blue148;\red255\green154\blue0;\red0\green0\blue0;\red192\green192\blue192;\red0\green255\blue255;}
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Calibri-Bold;}{\f1\fnil\fcharset1 Segoe UI Symbol;}{\f2\fnil\fcharset128 ArialMT;}{\f3\fnil\fcharset0 Calibri;}{\f4\fnil Calibri;}}
+{\colortbl ;\red89\green52\blue148;\red255\green154\blue0;\red0\green0\blue0;\red192\green192\blue192;\red255\green255\blue0;\red0\green255\blue255;}
 {\*\generator Riched20 10.0.19041}\viewkind4\uc1 
 \pard\sl240\slmult1\qj\b\f0\fs32\lang22 TEMA 04\par
 IPV4, M\'e1scara de Rede e Gateway\par
@@ -33,7 +33,8 @@ A classifica\'e7\'e3o das classes A, B e C dos endere\'e7os IP \'e9 tradicionalm
 - Identifica\'e7\'e3o: Utiliza os primeiros 8 bits (1\'ba octeto) para identificar a rede. Os 24 bits restantes s\'e3o usados para identificar hosts.\par
 - N\'famero de Redes: 128 redes poss\'edveis (de 0 a 127, mas 0 e 127 s\'e3o reservados).\par
 - N\'famero de Hosts por Rede: Aproximadamente 16 milh\'f5es (2^24 - 2, subtraindo 2 para endere\'e7os de rede e broadcast).\par
-- Uso Comum: Grandes redes, como ISPs e grandes organiza\'e7\'f5es.\par
+- \highlight5 Uso Comum: Grandes redes, como ISPs e grandes organiza\'e7\'f5es\highlight0 .\par
+- \highlight6 Faixa de endere\'e7os IP reservada para redes privadas na Classe A \'e9:\highlight5  10.0.0.0 \b a\b0  10.255.255.255\highlight0\par
 \par
 \highlight4\b  Classe B\par
 \highlight0\b0 - Faixa de Endere\'e7os: 128.0.0.0 a 191.255.0.0\par
@@ -41,29 +42,31 @@ A classifica\'e7\'e3o das classes A, B e C dos endere\'e7os IP \'e9 tradicionalm
 - Identifica\'e7\'e3o: Utiliza os primeiros 16 bits (2 primeiros octetos) para identificar a rede. Os 16 bits restantes s\'e3o usados para identificar hosts.\par
 - N\'famero de Redes: 16.384 redes poss\'edveis (2^14).\par
 - N\'famero de Hosts por Rede: Aproximadamente 65.000 (2^16 - 2, subtraindo 2 para endere\'e7os de rede e broadcast).\par
-- Uso Comum: Redes de tamanho m\'e9dio, como campus universit\'e1rios e empresas de m\'e9dio porte.\par
-\par
+- \highlight5 Uso Comum: Redes de tamanho m\'e9dio, como campus universit\'e1rios e empresas de m\'e9dio porte.\par
+\highlight0 - \highlight6 Faixa de endere\'e7os IP reservada para redes privadas na Classe B \'e9:\highlight5   172.16.0.0 \b a\b0  172.31.255.255\par
+\highlight0\par
 \highlight4\b  Classe C\par
 \highlight0\b0 - Faixa de Endere\'e7os: 192.0.0.0 a 223.255.255.0\par
 - M\'e1scara de Sub-rede Padr\'e3o: 255.255.255.0 (ou /24)\par
 - Identifica\'e7\'e3o: Utiliza os primeiros 24 bits (3 primeiros octetos) para identificar a rede. O \'faltimo octeto (8 bits) \'e9 usado para identificar hosts.\par
 - N\'famero de Redes: 2.097.152 redes poss\'edveis (2^21).\par
 - N\'famero de Hosts por Rede: 254 (2^8 - 2, subtraindo 2 para endere\'e7os de rede e broadcast).\par
-- Uso Comum: Pequenas redes, como redes locais em pequenas empresas ou resid\'eancias.\par
-\par
+- \highlight5 Uso Comum: Pequenas redes, como redes locais em pequenas empresas ou resid\'eancias.\par
+\highlight0 - \highlight6 Faixa de endere\'e7os IP reservada para redes privadas na Classe C \'e9: \highlight5 192.168.0.0 \b a\b0  192.168.255.255\par
+\highlight0\par
 \b  Resumo das Classes de Endere\'e7os IP\par
 \b0 - Classe A: Para grandes redes (8 bits para rede, 24 bits para hosts)\par
 - Classe B: Para redes m\'e9dias (16 bits para rede, 16 bits para hosts)\par
 - Classe C: Para pequenas redes (24 bits para rede, 8 bits para hosts)\par
 \par
 \b  Notas Adicionais\par
-\b0 - Classe D: Reservada para multicast (faixa de endere\'e7os: 224.0.0.0 a 239.255.255.255). Multicast \'e9 uma forma eficiente e escal\'e1vel de transmitir dados para m\'faltiplos destinat\'e1rios, economizando largura de banda e melhorando o desempenho da rede.\par
+\highlight6\b0 - Classe D: Reservada para multicast (faixa de endere\'e7os: 224.0.0.0 a 239.255.255.255). Multicast \'e9 uma forma eficiente e escal\'e1vel de transmitir dados para m\'faltiplos destinat\'e1rios, economizando largura de banda e melhorando o desempenho da rede.\par
 - Classe E: Reservada para uso futuro ou experimental (faixa de endere\'e7os: 240.0.0.0 a 255.255.255.255).\par
-\par
+\highlight0\par
 Essas classes de endere\'e7os IP s\'e3o parte do esquema original de endere\'e7amento IPv4, mas o uso de sub-redes (CIDR - Classless Inter-Domain Routing) tornou-se comum, permitindo uma atribui\'e7\'e3o mais flex\'edvel e eficiente de endere\'e7os IP.\par
 \par
 \b\f0 O que \'e9 gateway?\par
-\b0\f3 O \highlight4\ul\b Gateway em geral \'e9 um host ou dispositivo de rede no qual se depara com duas redes\highlight0\ulnone\b0 . Podemos traduzir o termo gateway como "\highlight5\b port\'e3o ou portal\highlight0\b0 ", \'e9 assim que essa tecnologia funciona, ele \'e9 um port\'e3o que libera o acesso ou n\'e3o a outras redes. Essa tecnologia libera a passagem dos dados entre hosts (Tablet, telefone, computador, notebook entre outros). No qual pode ser instalado "\ul pol\'edticas de acesso\ulnone ", que verificam a seguran\'e7a dos dados do computador at\'e9 a internet.\par
+\b0\f3 O \highlight4\ul\b Gateway em geral \'e9 um host ou dispositivo de rede no qual se depara com duas redes\highlight0\ulnone\b0 . Podemos traduzir o termo gateway como "\highlight6\b port\'e3o ou portal\highlight0\b0 ", \'e9 assim que essa tecnologia funciona, ele \'e9 um port\'e3o que libera o acesso ou n\'e3o a outras redes. Essa tecnologia libera a passagem dos dados entre hosts (Tablet, telefone, computador, notebook entre outros). No qual pode ser instalado "\ul pol\'edticas de acesso\ulnone ", que verificam a seguran\'e7a dos dados do computador at\'e9 a internet.\par
 \'c9 como se fosse um portal que libera o acesso para o mundo externo (Internet), \ul ele isola a rede dom\'e9stica com a internet\ulnone .\par
 Como hav\'edamos dito o gateway \'e9 um portal que libera o acesso para a internet, por exemplo, eu tenho 04 computadores com 04 IPs diferente que est\'e3o na mesma m\'e1scara de rede, para n\'e3o ter um modem ou qualquer outro dispositivo que conecte \'e0 internet em cada computador tem um gateway que compartilha a internet ou acesso para outra rede em todos os computadores da minha rede.\par
 \par
@@ -85,20 +88,20 @@ M\'e1scara de Rede: 255.255.255.0 \par
 Gateway: 192.168.1.1\par
 \par
 \b\f0 Configurando um cliente na rede\par
-\highlight5\b0\f3 Existem duas formas para configurar um cliente na rede\highlight0 , o \ul din\'e2mico onde s\'f3 insere o cabo de rede e o Protocolo DHCP inclui todas as informa\'e7\'f5es como IP, Gateway, DNS e M\'e1scara de Rede\ulnone , e a outra forma \'e9 \highlight5 est\'e1tic\highlight0 o onde voc\'ea entra em (Painel de Controle \f4\endash\f3  Redes e Internet \f4\endash\f3  Central de Rede e Compartilhamento \f4\endash\f3  Alterar as configura\'e7\'f5es do adaptador \f4\endash\f3\lang1046  \lang22 bot\'e3o direito do mouse em cima do \'edcone do adaptador \f4\endash\f3  propriedade \f4\endash\f3  Protocolo TCP/IPV4), chegando aqui voc\'ea inseri manualmente as informa\'e7\'f5es necess\'e1rias para se conectar na rede (\ul IPV4, m\'e1scara de rede, Gateway e DNS\ulnone ).\par
+\highlight6\b0\f3 Existem duas formas para configurar um cliente na rede\highlight0 , o \ul din\'e2mico onde s\'f3 insere o cabo de rede e o Protocolo DHCP inclui todas as informa\'e7\'f5es como IP, Gateway, DNS e M\'e1scara de Rede\ulnone , e a outra forma \'e9 \highlight6 est\'e1tic\highlight0 o onde voc\'ea entra em (Painel de Controle \f4\endash\f3  Redes e Internet \f4\endash\f3  Central de Rede e Compartilhamento \f4\endash\f3  Alterar as configura\'e7\'f5es do adaptador \f4\endash\f3\lang1046  \lang22 bot\'e3o direito do mouse em cima do \'edcone do adaptador \f4\endash\f3  propriedade \f4\endash\f3  Protocolo TCP/IPV4), chegando aqui voc\'ea inseri manualmente as informa\'e7\'f5es necess\'e1rias para se conectar na rede (\ul IPV4, m\'e1scara de rede, Gateway e DNS\ulnone ).\par
 \par
 \b\f0 IPv4, M\'e1scara de Rede e Gateway: Os Pilares da Comunica\'e7\'e3o em Rede\par
 \b0\f3 Nos meandros da comunica\'e7\'e3o digital, onde dados fluem como el\'e9trons por condutores virtuais, o IPv4, a m\'e1scara de rede e o gateway desempenham pap\'e9is fundamentais na garantia de que informa\'e7\'f5es sejam encaminhadas com precis\'e3o e efici\'eancia entre dispositivos em uma rede.\par
-Esses tr\'eas elementos, juntos, \highlight5\ul formam a base do funcionamento das redes de computadores modernas\highlight0\ulnone , permitindo que dados sejam transmitidos de um ponto a outro, atravessando oceanos e\par
+Esses tr\'eas elementos, juntos, \highlight6\ul formam a base do funcionamento das redes de computadores modernas\highlight0\ulnone , permitindo que dados sejam transmitidos de um ponto a outro, atravessando oceanos e\par
 continentes.\par
 \par
-\highlight4 IPv4: Os Endere\'e7os Digitais \'danicos\par
+\highlight4 IPv4: Os Endere\'e7os Digitais \'danicos (32 bits)\par
 \highlight0 O IPv4 (Internet Protocol version 4) \'e9 o sistema de endere\'e7amento padr\'e3o utilizado para identificar dispositivos em uma rede. Funciona como um equivalente digital de endere\'e7os postais.\par
-Um endere\'e7o IPv4 \'e9 composto por quatro grupos de n\'fameros, variando de 0 a 255, separados por pontos. Cada dispositivo em uma rede tem um endere\'e7o IPv4 exclusivo, permitindo que os dados sejam enviados ao destinat\'e1rio correto. No entanto, o esgotamento dos endere\'e7os IPv4 dispon\'edveis \'e9 uma preocupa\'e7\'e3o crescente, \highlight5\ul impulsionando a ado\'e7\'e3o do IPv6\highlight0\ulnone , que oferece um espa\'e7o de endere\'e7o muito maior.\par
+Um endere\'e7o IPv4 \'e9 composto por quatro grupos de n\'fameros, variando de 0 a 255, separados por pontos. Cada dispositivo em uma rede tem um endere\'e7o IPv4 exclusivo, permitindo que os dados sejam enviados ao destinat\'e1rio correto. No entanto, o esgotamento dos endere\'e7os IPv4 dispon\'edveis \'e9 uma preocupa\'e7\'e3o crescente, \highlight6\ul impulsionando a ado\'e7\'e3o do IPv6 (128 bits)\highlight0\ulnone , que oferece um espa\'e7o de endere\'e7o muito maior.\par
 \par
 \highlight4 M\'e1scara de Rede: Segmentando Comunica\'e7\'f5es\par
 \highlight0 Imagine uma cidade dividida em bairros, e cada bairro possui um c\'f3digo postal espec\'edfico. Da mesma forma, a m\'e1scara de rede divide uma rede em segmentos menores, permitindo que dispositivos em cada segmento se comuniquem eficientemente. A m\'e1scara de rede \'e9 uma s\'e9rie de\par
-bits que, quando combinados com o endere\'e7o IP, \highlight5 definem qual parte do endere\'e7o identifica a rede e qual parte identifica os dispositivos individuais\highlight0 . Ao segmentar uma rede em sub-redes, a m\'e1scara de rede otimiza o uso de endere\'e7os IP e melhora o desempenho da comunica\'e7\'e3o.\par
+bits que, quando combinados com o endere\'e7o IP, \highlight6 definem qual parte do endere\'e7o identifica a rede e qual parte identifica os dispositivos individuais\highlight0 . Ao segmentar uma rede em sub-redes, a m\'e1scara de rede otimiza o uso de endere\'e7os IP e melhora o desempenho da comunica\'e7\'e3o.\par
 \par
 \highlight4 Gateway: A Ponte entre Redes\par
 \highlight0 O gateway, \highlight4\ul tamb\'e9m conhecido como roteador\highlight0\ulnone , \'e9 o ponto de entrada e sa\'edda de uma rede para outras redes ou para a internet. Ele atua como uma esp\'e9cie de porteiro digital, direcionando o tr\'e1fego de dados entre redes diferentes. Sem o gateway, a comunica\'e7\'e3o ficaria restrita apenas \'e0 rede local. Quando um dispositivo deseja se comunicar fora da rede local, ele envia os dados para o\par
