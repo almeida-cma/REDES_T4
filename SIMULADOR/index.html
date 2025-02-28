@@ -1,45 +1,55 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador de Rede IPv4</title>
+    <title>Configuração de Rede</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
-        <h1>Simulador de Rede IPv4</h1>
-        
-        <div class="maquina">
+        <h1>Configuração de Rede</h1>
+
+        <!-- Formulário para Máquina 1 -->
+        <div class="form-section">
             <h2>Máquina 1</h2>
-            <div class="configuracao">
-                <label for="ip1">Endereço IP:</label>
-                <input type="text" id="ip1" placeholder="Ex: 192.168.0.1">
-
-                <label for="mascara1">Máscara de Sub-rede:</label>
+            <div class="form-group">
+                <label for="ip1">IP:</label>
+                <input type="text" id="ip1" placeholder="Ex: 192.168.0.10">
+            </div>
+            <div class="form-group">
+                <label for="mascara1">Máscara:</label>
                 <input type="text" id="mascara1" placeholder="Ex: 255.255.255.0">
-
+            </div>
+            <div class="form-group">
                 <label for="gateway">Gateway:</label>
-                <input type="text" id="gateway" placeholder="Ex: 192.168.0.254">
+                <input type="text" id="gateway" placeholder="Ex: 192.168.0.1">
             </div>
         </div>
 
-        <div class="maquina">
+        <!-- Formulário para Máquina 2 -->
+        <div class="form-section">
             <h2>Máquina 2</h2>
-            <div class="configuracao">
-                <label for="ip2">Endereço IP:</label>
-                <input type="text" id="ip2" placeholder="Ex: 192.168.0.2">
-                
-                <label for="mascara2">Máscara de Sub-rede:</label>
+            <div class="form-group">
+                <label for="ip2">IP:</label>
+                <input type="text" id="ip2" placeholder="Ex: 192.168.0.20">
+            </div>
+            <div class="form-group">
+                <label for="mascara2">Máscara:</label>
                 <input type="text" id="mascara2" placeholder="Ex: 255.255.255.0">
             </div>
         </div>
 
+        <!-- Botão para configurar a rede -->
         <button onclick="configurarRede()">Configurar Rede</button>
 
-        <div class="resultado" id="resultado"></div>
+        <!-- Área de resultados -->
+        <div class="resultado-container">
+            <h2>Resultado</h2>
+            <pre id="resultado"></pre>
+        </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="rede.js"></script>
 </body>
 </html>
