@@ -1,165 +1,126 @@
-function validarIP(ip) {
-    var regexIP = /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+// --- FUNÇÕES DE VALIDAÇÃO E CÁLCULO ---
+
+/**
+ * Converte uma string de IP/Máscara para um número de 32 bits.
+ * Facilita cálculos bit-a-bit.
+ */
+function ipToLong(ip) {
+    return ip.split('.').reduce((acc, octeto) => (acc << 8) + parseInt(octeto, 10), 0);
+}
+
+/**
+ * Valida se uma string segue o formato de um endereço IPv4.
+ */
+function validarFormatoIP(ip) {
+    const regexIP = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
     return regexIP.test(ip);
 }
 
+/**
+ * **CORRIGIDO**: Valida se uma máscara de sub-rede é conceitualmente válida.
+ * Uma máscara válida é uma sequência de bits '1' seguida por '0's.
+ */
 function validarMascara(mascara) {
-    var regexMascara = /^(255|254|252|248|240|224|192|128|0)\.(255|254|252|248|240|224|192|128|0)\.(255|254|252|248|240|224|192|128|0)\.(255|254|252|248|240|224|192|128|0)$/;
-    if (!regexMascara.test(mascara)) {
-        return false;
-    }
-
-    // Converte a máscara para binário e verifica se é contígua
-    var partes = mascara.split('.').map(Number);
-    var binario = partes.map(parte => parte.toString(2).padStart(8, '0')).join('');
-    var padraoValido = /^1+0+$/;
-    return padraoValido.test(binario);
+    if (!validarFormatoIP(mascara)) return false;
+    const mascaraLong = ipToLong(mascara);
+    // Inverte os bits e adiciona 1. Se o resultado for uma potência de 2,
+    // significa que a máscara original era uma sequência de 1s seguida por 0s.
+    const inverted = ~mascaraLong;
+    const isPowerOfTwo = (inverted + 1) & inverted;
+    return isPowerOfTwo === 0;
 }
 
-function calcularSubrede(ip, mascara) {
-    var ipPartes = ip.split('.').map(Number);
-    var mascaraPartes = mascara.split('.').map(Number);
-    var subrede = ipPartes.map((parte, index) => parte & mascaraPartes[index]);
-    return subrede.join('.');
+/**
+ * Calcula o endereço de rede a partir de um IP e uma máscara.
+ */
+function calcularEnderecoRede(ip, mascara) {
+    const ipLong = ipToLong(ip);
+    const mascaraLong = ipToLong(mascara);
+    return ipLong & mascaraLong;
 }
 
-function obterEnderecoDeBroadcast(ip, mascara) {
-    var ipPartes = ip.split('.').map(Number);
-    var mascaraPartes = mascara.split('.').map(Number);
-    var broadcast = ipPartes.map((parte, index) => parte | (~mascaraPartes[index] & 255));
-    return broadcast.join('.');
+/**
+ * Calcula o endereço de broadcast a partir de um IP e uma máscara.
+ */
+function calcularEnderecoBroadcast(ip, mascara) {
+    const redeLong = calcularEnderecoRede(ip, mascara);
+    const mascaraLong = ipToLong(mascara);
+    return redeLong | (~mascaraLong);
 }
 
-function mesmoSubrede(ip1, mascara1, ip2) {
-    var subredeIp1 = calcularSubrede(ip1, mascara1);
-    var subredeIp2 = calcularSubrede(ip2, mascara1);
-    return subredeIp1 === subredeIp2;
+/**
+ * Verifica se um endereço IP é o endereço de rede ou de broadcast.
+ */
+function ehEnderecoReservado(ip, mascara) {
+    const ipLong = ipToLong(ip);
+    const redeLong = calcularEnderecoRede(ip, mascara);
+    const broadcastLong = calcularEnderecoBroadcast(ip, mascara);
+    return ipLong === redeLong || ipLong === broadcastLong;
 }
 
-function enderecoReservado(ip, mascara) {
-    var enderecoDeRede = calcularSubrede(ip, mascara);
-    var enderecoDeBroadcast = obterEnderecoDeBroadcast(ip, mascara);
-    return ip === enderecoDeRede || ip === enderecoDeBroadcast;
-}
-
-function ipEspecial(ip) {
-    var partes = ip.split('.').map(Number);
-    // Verifica se é loopback (127.0.0.0/8)
-    if (partes[0] === 127) {
-        return true;
-    }
-    // Verifica se é multicast (224.0.0.0 a 239.255.255.255)
-    if (partes[0] >= 224 && partes[0] <= 239) {
-        return true;
-    }
-    return false;
-}
-
-function ping(ipDestino) {
-    var resultado = document.getElementById("resultado");
-    resultado.textContent += "Enviando ICMP Echo Request para " + ipDestino + "...\n";
-    resultado.textContent += "Recebido ICMP Echo Reply de " + ipDestino + "\n\n";
-}
-
-function exibirResumo(ip1, mascara1, gateway, ip2, mascara2, resultadoValidacao) {
-    var resumo = `
-=== Resumo da Configuração ===
-
-Máquina 1:
-- IP: ${ip1}
-- Máscara: ${mascara1}
-- Gateway: ${gateway}
-
-Máquina 2:
-- IP: ${ip2}
-- Máscara: ${mascara2}
-
-=== Resultados ===
-${resultadoValidacao}
-`;
-
-    var resultadoElemento = document.getElementById("resultado");
-    resultadoElemento.textContent = resumo;
-}
+// --- LÓGICA PRINCIPAL ---
 
 function configurarRede() {
-    var ip1 = document.getElementById("ip1").value;
-    var mascara1 = document.getElementById("mascara1").value;
-    var gateway = document.getElementById("gateway").value;
+    const ip1 = document.getElementById("ip1").value.trim();
+    const mascara1 = document.getElementById("mascara1").value.trim();
+    const ip2 = document.getElementById("ip2").value.trim();
+    const mascara2 = document.getElementById("mascara2").value.trim();
+    const gateway = document.getElementById("gateway").value.trim();
+    const resultadoDiv = document.getElementById("resultado");
+    
+    let erros = [];
 
-    var ip2 = document.getElementById("ip2").value;
-    var mascara2 = document.getElementById("mascara2").value;
+    // 1. Validação de Formato e Conceito
+    if (!validarFormatoIP(ip1)) erros.push("Máquina 1: Formato de IP inválido.");
+    if (!validarMascara(mascara1)) erros.push("Máquina 1: Máscara de sub-rede inválida.");
+    if (!validarFormatoIP(ip2)) erros.push("Máquina 2: Formato de IP inválido.");
+    if (!validarMascara(mascara2)) erros.push("Máquina 2: Máscara de sub-rede inválida.");
+    if (!validarFormatoIP(gateway)) erros.push("Gateway: Formato de IP inválido.");
 
-    var resultadoValidacao = '';
-
-    // Validações para Máquina 1
-    if (!validarIP(ip1)) {
-        resultadoValidacao += "Máquina 1: Endereço IP inválido.\n";
-    }
-    if (!validarMascara(mascara1)) {
-        resultadoValidacao += "Máquina 1: Máscara de sub-rede inválida.\n";
-    }
-    if (!validarIP(gateway)) {
-        resultadoValidacao += "Máquina 1: Gateway inválido.\n";
-    }
-    if (ipEspecial(ip1)) {
-        resultadoValidacao += "Máquina 1: Endereço IP é de loopback ou multicast.\n";
-    }
-
-    // Validações para Máquina 2
-    if (!validarIP(ip2)) {
-        resultadoValidacao += "Máquina 2: Endereço IP inválido.\n";
-    }
-    if (!validarMascara(mascara2)) {
-        resultadoValidacao += "Máquina 2: Máscara de sub-rede inválida.\n";
-    }
-    if (ipEspecial(ip2)) {
-        resultadoValidacao += "Máquina 2: Endereço IP é de loopback ou multicast.\n";
+    // Se houver erros de formato, para a verificação aqui.
+    if (erros.length > 0) {
+        resultadoDiv.innerHTML = `<span class="error">${erros.join("<br>")}</span>`;
+        return;
     }
 
-    // Verificações adicionais
-    if (validarIP(ip1) && validarMascara(mascara1) && validarIP(gateway)) {
-        if (!mesmoSubrede(ip1, mascara1, gateway)) {
-            resultadoValidacao += "Máquina 1: Gateway não está na mesma sub-rede.\n";
-        }
-        if (enderecoReservado(ip1, mascara1)) {
-            resultadoValidacao += "Máquina 1: Endereço IP é reservado (rede ou broadcast).\n";
-        }
-        if (enderecoReservado(gateway, mascara1)) {
-            resultadoValidacao += "Máquina 1: Gateway é um endereço reservado.\n";
-        }
+    // 2. Validações de Conflito e Configuração Lógica
+    if (ip1 === ip2) erros.push("Conflito: Os IPs das máquinas não podem ser iguais.");
+    if (ip1 === gateway) erros.push("Conflito: O IP da Máquina 1 não pode ser igual ao do Gateway.");
+    if (ip2 === gateway) erros.push("Conflito: O IP da Máquina 2 não pode ser igual ao do Gateway.");
+
+    if (mascara1 !== mascara2) {
+        erros.push("Aviso: As máscaras de sub-rede são diferentes. Para comunicação direta, elas geralmente devem ser iguais.");
     }
 
-    if (validarIP(ip2) && validarMascara(mascara2)) {
-        if (enderecoReservado(ip2, mascara2)) {
-            resultadoValidacao += "Máquina 2: Endereço IP é reservado (rede ou broadcast).\n";
-        }
+    // 3. Validações de Sub-rede
+    const rede1 = calcularEnderecoRede(ip1, mascara1);
+    const rede2 = calcularEnderecoRede(ip2, mascara2);
+    const redeGateway = calcularEnderecoRede(gateway, mascara1); // Gateway deve ser validado com a máscara da rede
+
+    if (rede1 !== redeGateway) {
+        erros.push("Máquina 1: O Gateway não pertence à mesma sub-rede.");
+    }
+    if (rede2 !== redeGateway) {
+        erros.push("Máquina 2: Não está na mesma sub-rede que o Gateway.");
+    }
+    if (rede1 !== rede2) {
+        erros.push("As máquinas não estão na mesma sub-rede e não poderão se comunicar diretamente.");
     }
 
-    if (ip1 === ip2) {
-        resultadoValidacao += "Os endereços IP das máquinas não podem ser iguais.\n";
+    // 4. Validação de Endereços Reservados (Rede/Broadcast)
+    if (ehEnderecoReservado(ip1, mascara1)) erros.push("Máquina 1: O IP é um endereço reservado (rede ou broadcast).");
+    if (ehEnderecoReservado(ip2, mascara2)) erros.push("Máquina 2: O IP é um endereço reservado (rede ou broadcast).");
+    if (ehEnderecoReservado(gateway, mascara1)) erros.push("Gateway: O IP é um endereço reservado (rede ou broadcast).");
+
+    // --- EXIBIÇÃO DO RESULTADO ---
+
+    if (erros.length > 0) {
+        resultadoDiv.innerHTML = `<span class="error">${erros.join("<br>")}</span>`;
+    } else {
+        let sucessoMsg = `<span class="success">Configuração de rede válida!</span><br><br>`;
+        sucessoMsg += `--- Simulação de Ping ---<br>`;
+        sucessoMsg += `Pingando ${ip2} a partir de ${ip1}... Resposta recebida.<br>`;
+        sucessoMsg += `Pingando ${ip1} a partir de ${ip2}... Resposta recebida.<br>`;
+        resultadoDiv.innerHTML = sucessoMsg;
     }
-
-    // Verifica se as máquinas estão na mesma sub-rede
-    if (validarIP(ip1) && validarMascara(mascara1) && validarIP(ip2) && validarMascara(mascara2)) {
-        if (!mesmoSubrede(ip1, mascara1, ip2)) {
-            resultadoValidacao += "Máquina 1 e Máquina 2 não estão na mesma sub-rede.\n";
-        }
-    }
-
-    // Se todas as validações passarem
-    if (resultadoValidacao === '') {
-        resultadoValidacao = "Configuração válida!\n";
-
-        // Simulação de ping entre as máquinas
-        resultadoValidacao += "\nSimulação de Ping:\n";
-        resultadoValidacao += `Enviando ICMP Echo Request para ${ip2}...\n`;
-        resultadoValidacao += `Recebido ICMP Echo Reply de ${ip2}\n\n`;
-        resultadoValidacao += `Enviando ICMP Echo Request para ${ip1}...\n`;
-        resultadoValidacao += `Recebido ICMP Echo Reply de ${ip1}\n`;
-    }
-
-    // Exibir resumo
-    exibirResumo(ip1, mascara1, gateway, ip2, mascara2, resultadoValidacao);
 }
-
