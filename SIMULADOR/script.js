@@ -162,3 +162,4 @@ function configurarRede() {
     // Exibir resumo
     exibirResumo(ip1, mascara1, gateway, ip2, mascara2, resultadoValidacao);
 }
+
